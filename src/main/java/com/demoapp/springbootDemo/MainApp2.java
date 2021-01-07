@@ -42,28 +42,53 @@ public class MainApp2 {
 	}
 	
 	@GetMapping("/loadusers")
-	public List<LoginInfo> load() {
+	public List<User> load() {
 		return userService.loadUserInfo();
 	}
-	@GetMapping("/finduser/{name}")
-	public String findUser(@PathVariable("name") String name) {
-		if (userService.findUser(name)) {
+	
+	@PostMapping("/findUser")
+	public String findUser(@RequestParam("id") int id) {
+		if (userService.findUser(id)) {
+			return "user found";
+		} else {
+			return "user not found";
+		}
+	}
+	@PostMapping("/updateuser")
+	public String updateUser(@RequestParam("id") int id,
+			@RequestParam("uname") String name,
+			@RequestParam("pass") String pass,
+			@RequestParam("email") String email,
+			@RequestParam("city") String city) {
+		if (userService.updateUser(id,name,pass,email,city)) {
+			return "user updated!";
+		}
+		return "user not updated!";
+	}
+	
+	
+	/*
+	@GetMapping("/finduser/{id}")
+	public String findUser(@PathVariable("id") int id) {
+		if (userService.findUser(id)) {
 			return "user found!";
 		}
 		return "user not found!";
 	}
+	*/
 	
-	@GetMapping("/updateuser/{name}/{email}")
-	public String updateUser(@PathVariable("name") String name, @PathVariable("email") String email) {
-		if (userService.updateUser(name,email)) {
+	/*
+	@GetMapping("/updateuser/{id}/{email}")
+	public String updateUser(@PathVariable("id") int id, @PathVariable("email") String email) {
+		if (userService.updateUser(id,email)) {
 			return "user updated";
 		}
 		return "user NOT updated";
 	}
-	
-	@GetMapping("/deleteuser/{name}")
-	public String deleteUser(@PathVariable("name") String name) {
-		if (userService.deleteUser(name))
+	*/
+	@GetMapping("/deleteuser/{id}")
+	public String deleteUser(@PathVariable("id") int id) {
+		if (userService.deleteUser(id))
 			return "user deleted";
 		
 		return "user NOT deleted";

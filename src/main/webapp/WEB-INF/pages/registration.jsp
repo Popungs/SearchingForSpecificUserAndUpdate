@@ -20,7 +20,7 @@ Email: <input type ="email" name ="email"/>
 City: <input type ="text" name ="city"/>
 <br/>
 
-<button type ="submit">registrater</button>
+<button type ="submit">register</button>
 </form>
 </body>
 </html>

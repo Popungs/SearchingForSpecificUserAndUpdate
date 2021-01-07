@@ -21,7 +21,7 @@ public class UserService {
 			return false;
 		}
 
-		for (LoginInfo li : userDao.findAll()) {
+		for (User li : userDao.findAll()) {
 			String liUname = li.getUname();
 			String liPass = li.getPassword();
 			if (liUname.equals(uname) && liPass.equals(pass)) {
@@ -33,7 +33,7 @@ public class UserService {
 	}
 
 	public boolean registerValid(String uname, String pass, String email, String city) {
-		LoginInfo newLogInfo = new LoginInfo();
+		User newLogInfo = new User();
 
 		if ((!uname.equals(null) && !pass.equals(null) && !email.equals(null) && !city.equals(null))) {
 			newLogInfo.setUname(uname);
@@ -46,7 +46,7 @@ public class UserService {
 		}
 
 		if (userDao.count() > 0) { // size is greater than 1
-			for (LoginInfo li : userDao.findAll()) {
+			for (User li : userDao.findAll()) {
 				System.out.println(li);
 				String liUname = li.getUname();
 				String liEmail = li.getEmail();
@@ -71,16 +71,15 @@ public class UserService {
 
 	}
 
-	public List<LoginInfo> loadUserInfo() {
-		List<LoginInfo> li = (List<LoginInfo>) userDao.findAll();
+	public List<User> loadUserInfo() {
+		List<User> li = (List<User>) userDao.findAll();
 
 		return li;
 
 	}
 
-	public boolean findUser(String uname) {
-		
-		Optional<LoginInfo> logi = userDao.findById(uname);
+	public boolean findUser(int id) {
+		Optional<User> logi = userDao.findById(id);
 		if (logi.isPresent()) {
 			return true;
 		} else {
@@ -88,11 +87,16 @@ public class UserService {
 		}
 	}
 
-	public boolean updateUser(String uname, String email) {
-		Optional<LoginInfo> logi = userDao.findById(uname);
+
+	public boolean updateUser(int id , String name, String password, String email,
+			String City) {
+		Optional<User> logi = userDao.findById(id);
 		if (logi.isPresent()) {
-			LoginInfo login = userDao.findById(uname).get();
+			User login = userDao.findById(id).get();
 			login.setEmail(email);
+			login.setUname(name);
+			login.setCity(City);
+			login.setPassword(password);
 			userDao.save(login);
 			return true;
 		} else {
@@ -100,9 +104,9 @@ public class UserService {
 		}
 	}
 
-	public boolean deleteUser(String uname) {
-		if (this.findUser(uname)) {
-			userDao.deleteById(uname);
+	public boolean deleteUser(int id) {
+		if (this.findUser(id)) {
+			userDao.deleteById(id);
 			return true;
 		}
 		return false;
